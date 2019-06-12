@@ -3,40 +3,67 @@
 // This example shows how to make a simple [FloatingActionButton] in a
 // [Scaffold], with a pink [backgroundColor] and a thumbs up [Icon].
 
+import 'package:bloc_library/meta/localization.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:todos_repository_simple/todos_repository_simple.dart';
 
-void main() => runApp(MyApp());
+import 'bloc/todos/todos.dart';
+import 'data/model/todo.dart';
+import 'delegates/simple_bloc_delegate.dart';
+
+import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todos_app_core/todos_app_core.dart';
+
+import 'ui/screens/add_edit_screen.dart';
+import 'ui/screens/home_screen.dart';
+
+void main() {
+  BlocSupervisor().delegate = SimpleBlocDelegate();
+  runApp(MyApp());
+}
 
 /// This Widget is the main application widget.
 class MyApp extends StatelessWidget {
-  static const String _title = 'Flutter Code Sample';
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: _title,
-      home: MyStatelessWidget(),
-    );
-  }
-}
-
-/// This is the stateless widget that the main application instantiates.
-class MyStatelessWidget extends StatelessWidget {
-  MyStatelessWidget({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Floating Action Button Sample'),
+  final todosBloc = ToDosBloc(
+    todosRepository: const TodosRepositoryFlutter(
+      fileStorage: const FileStorage(
+        '__flutter_bloc_app__',
+        getApplicationDocumentsDirectory,
       ),
-      body: Center(child: Text('Press the button below!')),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Add your onPressed code here!
+    ),
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      bloc: todosBloc,
+      child: MaterialApp(
+        title: FlutterBlocLocalizations().appTitle,
+        theme: ArchSampleTheme.theme,
+        localizationsDelegates: [
+          ArchSampleLocalizationsDelegate(),
+          FlutterBlocLocalizationsDelegate(),
+        ],
+        routes: {
+          ArchSampleRoutes.home: (context) {
+            return HomeScreen(
+              onInit: () => todosBloc.dispatch(LoadToDos()),
+            );
+          },
+          ArchSampleRoutes.addTodo: (context) {
+            return AddEditScreen(
+              key: ArchSampleKeys.addTodoScreen,
+              onSave: (task, note) {
+                todosBloc.dispatch(
+                  AddToDo(ToDo(task, note: note)),
+                );
+              },
+              isEditing: false,
+            );
+          },
         },
-        child: Icon(Icons.thumb_up),
-        backgroundColor: Colors.pink,
       ),
     );
   }
