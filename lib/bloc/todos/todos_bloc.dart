@@ -19,6 +19,9 @@ class ToDosBloc extends Bloc<ToDosEvent, ToDosState> {
 
   @override
   Stream<ToDosState> mapEventToState(ToDosEvent event) async* {
+    //We use the asynchronous generator: async* and the yield statement.
+    //Marking a function with the async* modifier, identifies the function as an asynchronous generator:
+    //Each time the yield statement is called, it adds the result of the expression that follows the yield to the output Stream.
     if (event is LoadToDos) {
       yield* _mapLoadToDosToState();
     } else if (event is AddToDo) {

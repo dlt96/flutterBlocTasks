@@ -45,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButton: FloatingActionButton(
         key: ArchSampleKeys.addTodoFab,
         onPressed: () {
-          Navigator.pushNamed(context, ArchSampleRoutes.addTodo);
+          Navigator.pushNamed(context, ArchSampleRoutes.addTodo);//navigate to route
         },
         child: Icon(Icons.add),
         tooltip: ArchSampleLocalizations.of(context).addTodo,

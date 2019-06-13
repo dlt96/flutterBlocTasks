@@ -14,10 +14,10 @@ class ToDo extends Equatable {
 
   ToDo(this.task, {this.complete = false, String note = '', String id})
       : this.note = note ?? '',
-        this.id = id ?? Uuid().generateV4(),
+        this.id = id ?? Uuid().generateV4(),//automatically generates an unique id
         super([complete, id, note, task]);
 
-  ToDo copyWith({bool complete, String id, String note, String task}) {
+  ToDo copyWith({bool complete, String id, String note, String task}) {// to be used when editing an ToDo
     return ToDo(
       task ?? this.task,
       complete: complete ?? this.complete,
@@ -26,7 +26,7 @@ class ToDo extends Equatable {
     );
   }
 
-  TodoEntity toEntity() {
+  TodoEntity toEntity() {//to send ToDos to the Backend
     return TodoEntity(task, id, note, complete);
   }
 

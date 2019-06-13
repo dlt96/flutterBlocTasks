@@ -47,7 +47,7 @@ class _AddEditScreenState extends State<AddEditScreen> {
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Form(
-          key: _formKey,
+          key: _formKey,//the keys are like view ids
           child: ListView(
             children: [
               TextFormField(
@@ -58,7 +58,7 @@ class _AddEditScreenState extends State<AddEditScreen> {
                 decoration: InputDecoration(
                   hintText: localizations.newTodoHint,
                 ),
-                validator: (val) {
+                validator: (val) {//we can directly check if its empty
                   return val.trim().isEmpty
                       ? localizations.emptyTodoError
                       : null;
@@ -72,7 +72,7 @@ class _AddEditScreenState extends State<AddEditScreen> {
                 style: textTheme.subhead,
                 decoration: InputDecoration(
                   hintText: localizations.notesHint,
-                ),
+                ),//here we don't have to check if its empty
                 onSaved: (value) => _note = value,
               )
             ],

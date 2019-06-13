@@ -43,10 +43,11 @@ class MyApp extends StatelessWidget {
         title: FlutterBlocLocalizations().appTitle,
         theme: ArchSampleTheme.theme,
         localizationsDelegates: [
-          ArchSampleLocalizationsDelegate(),
-          FlutterBlocLocalizationsDelegate(),
+          ArchSampleLocalizationsDelegate(),//for translations purpose
+          FlutterBlocLocalizationsDelegate(),//here we only support english
         ],
         routes: {
+          //here we define the navigation between screens
           ArchSampleRoutes.home: (context) {
             return HomeScreen(
               onInit: () => todosBloc.dispatch(LoadToDos()),
